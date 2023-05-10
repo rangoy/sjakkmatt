@@ -40,14 +40,11 @@ export default function SjakkMattMartin() {
   }
 
   function onDrop(sourceSquare: Square, targetSquare: Square) {
-    const move = makeAMove({
+    makeAMove({
       from: sourceSquare,
       to: targetSquare,
       promotion: "q", // always promote to a queen for example simplicity
     });
-
-    // illegal move
-    // if (move === null) return false;
     return true;
   }
 
