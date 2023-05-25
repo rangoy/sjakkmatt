@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chess, Color, PartialMove } from "chess.ts";
 import { Chessboard } from "react-chessboard";
 import { Square } from "chess.js";
@@ -13,11 +13,6 @@ export default function SjakkMattMartin() {
     setGame((game) => {
       // const gameCopy = game.clone();
       const result = game.move(move);
-
-      if (gameConfig[game.state.turn] === "computer") {
-        setTimeout(makeRandomMove, 2000);
-      }
-
       console.log(result, game);
       return game.clone();
       // if (result)
@@ -27,6 +22,11 @@ export default function SjakkMattMartin() {
     // return result; // null if the move was illegal, the move object if the move was legal
   }
 
+  useEffect(() => {
+    if (gameConfig[game.state.turn] === "computer") {
+      makeRandomMove();
+    }
+  });
   function makeRandomMove() {
     console.log("makerandom2");
 
