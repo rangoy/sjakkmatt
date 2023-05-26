@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Chess, Color, PartialMove } from "chess.ts";
+import { Chess, Color, Move, PartialMove, Piece, PieceSymbol } from "chess.ts";
 import { Chessboard } from "react-chessboard";
 import { Square } from "chess.js";
 import { CustomSquareStyles } from "react-chessboard/dist/chessboard/types";
@@ -27,6 +27,30 @@ export default function SjakkMattMartin() {
     // return result; // null if the move was illegal, the move object if the move was legal
   }
 
+  function scorePiece(p: PieceSymbol) {
+    switch (p) {
+      case "p":
+        return 1;
+      case "k":
+        return 1000;
+      case "b":
+        return 3;
+      case "n":
+        return 3;
+      case "r":
+        return 5;
+      case "q":
+        return 10;
+      default:
+        return 0;
+    }
+  }
+  function scoreMove(move: Move) {
+    if (move.captured) return scorePiece(move.captured);
+
+    return 0;
+  }
+
   function safeGameMutate(modify: (g: Chess) => void) {
     setGame((g) => {
       const update = g.clone();
@@ -42,11 +66,17 @@ export default function SjakkMattMartin() {
   function makeRandomMove() {
     console.log("makerandom2");
 
-    const possibleMoves = game
+    console.log("possiblemoves", game.moves({ verbose: true }));
+
+    let possibleMoves = game
       .moves({ verbose: true })
+      .map((move) => ({ ...move, score: scoreMove(move) }))
+      .sort((ma, mb) => mb.score - ma.score)
       .filter((v) => v.color === "b");
     console.log(possibleMoves);
     if (game.gameOver() || game.inDraw() || possibleMoves.length === 0) return; // exit if the game is over
+    const bestScore = possibleMoves[0].score;
+    possibleMoves = possibleMoves.filter(({ score }) => bestScore === score);
     const randomIndex = Math.floor(Math.random() * possibleMoves.length);
     makeAMove(possibleMoves[randomIndex]);
   }
