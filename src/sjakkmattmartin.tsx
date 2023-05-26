@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Chess, Color, Move, PartialMove, Piece, PieceSymbol } from "chess.ts";
+import { Chess, Color, Move, PartialMove, PieceSymbol } from "chess.ts";
 import { Chessboard } from "react-chessboard";
 import { Square } from "chess.js";
 import { CustomSquareStyles } from "react-chessboard/dist/chessboard/types";
