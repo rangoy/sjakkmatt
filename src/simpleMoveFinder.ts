@@ -33,29 +33,29 @@ export function scoreMove(
   if (ifMove.inCheck()) score += 1;
 
   console.log('--- starting oposite analysis', recursion)
-  if (--recursion > 0) {
-    let x = ifMove.moves({ verbose: true }).map((m) => {
-      console.log(m);
-      return {
-        score: scoreMove(ifMove, m, -direction as (-1 | 1), recursion - 1),
-        ...m,
-      };
-    });
-    let res = x.reduce((acc, m) => acc + m.score, 0);
+  // if (--recursion > 0) {
+  //   let x = ifMove.moves({ verbose: true }).map((m) => {
+  //     console.log(m);
+  //     return {
+  //       score: scoreMove(ifMove, m, -direction as (-1 | 1), recursion - 1),
+  //       ...m,
+  //     };
+  //   });
+  //   let res = x.reduce((acc, m) => acc + m.score, 0);
 
-    console.log({ res });
-    score += res;
-  }
+  //   console.log({ res });
+  //   score += res;
+  // }
 
   console.log({score, direction});
-  return score * direction * recursion;
+  return score * direction /* * recursion */;
 }
 
 export function getNextMove(game: Chess) {
   const start = Date.now()
   let possibleMoves = game
     .moves({ verbose: true })
-    .map((move) => ({ score: scoreMove(game, move, 1, 1), ...move,  }))
+    .map((move) => ({ score: scoreMove(game, move, 1, 0), ...move,  }))
     .sort((ma, mb) => mb.score - ma.score);
 
   const bestScore = possibleMoves[0].score;
