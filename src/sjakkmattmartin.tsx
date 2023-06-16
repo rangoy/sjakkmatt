@@ -3,7 +3,9 @@ import { Chess, Color, Move, PartialMove, PieceSymbol } from "chess.ts";
 import { Chessboard } from "react-chessboard";
 import { Square } from "chess.js";
 import { CustomSquareStyles } from "react-chessboard/dist/chessboard/types";
-import { getNextMove } from "./simpleMoveFinder";
+import { getNextMove } from "./bots/simpleMoveFinder";
+import Stockfish from 'stockfish';
+
 
 export default function SjakkMattMartin() {
   const [game, setGame] = useState(new Chess());
